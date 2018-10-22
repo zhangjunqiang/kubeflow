@@ -2,10 +2,7 @@
   local k = import "k.libsonnet",
   local util = import "kubeflow/core/util.libsonnet",
   new(_env, _params):: {
-    local params = _env + _params {
-      namespace: if std.objectHas(_params, "namespace") && _params.namespace != "null" then
-        _params.namespace else _env.namespace,
-    },
+    local params = _env + _params,
 
     local ambassadorService = {
       apiVersion: "v1",
@@ -146,7 +143,7 @@
     ambassadorRoleBinding:: ambassadorRoleBinding,
 
     local ambassadorDeployment = {
-      local replicas = if params.cloud == "minikube" then 1 else 3,
+      local replicas = if params.platform == "minikube" then 1 else 3,
       apiVersion: "extensions/v1beta1",
       kind: "Deployment",
       metadata: {
